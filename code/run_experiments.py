@@ -79,10 +79,19 @@ def main():
     verbose = not args.quiet
 
     # ── Setup LLM ─────────────────────────────────────────────────────────────
-    if args.demo or not config.OPENAI_API_KEY:
+    if args.demo:
         print("[run_experiments] Using MockLLMClient (offline demo mode).")
         llm = MockLLMClient()
+    elif config.BACKEND == "ollama":
+        print(f"[run_experiments] Using Ollama backend → {config.MODEL}")
+        print("  Make sure Ollama is running: ollama serve")
+        llm = LLMClient()
+    elif not config.OPENAI_API_KEY:
+        print("[run_experiments] No API key found. Falling back to MockLLMClient.")
+        print("  Set OPENAI_API_KEY or use --demo for offline mode.")
+        llm = MockLLMClient()
     else:
+        print(f"[run_experiments] Using {config.BACKEND} backend → {config.MODEL}")
         llm = LLMClient()
 
     executor = CodeExecutor()

@@ -87,9 +87,9 @@ with a 5-second timeout.
   \item \textbf{ToT-BFS} and \textbf{ToT-DFS}: $k=3$ branching factor, depth 2.
 \end{itemize}
 
-\textbf{Base LLM:} GPT-4o-mini via OpenAI API.
+\textbf{Base LLM:} Qwen2.5-Coder-7B running locally via Ollama (fully open-source, free).
 \textbf{Evaluation metrics:} fix success rate, first-attempt accuracy, token cost, backtrack rate.
-No GPU required; all computation is API calls + local Python execution.
+No GPU required; runs on Apple Silicon via Ollama's Metal acceleration.
 
 %% ── 4. Results & Analysis ────────────────────────────────────────────────────────
 \section*{4. Results \& Analysis}
@@ -135,8 +135,9 @@ single-shot CoT. This lower first-attempt rate is expected—ToT explores more c
 because it doesn't assume the first path is correct.
 
 \textbf{Token cost.}
-ToT uses roughly 7–13$\times$ more tokens than IO/CoT per problem. The cost-performance tradeoff
-is favorable if correctness is critical, but CoT-SC at 66\% offers a middle ground at lower cost.
+ToT uses roughly 7–13$\times$ more tokens than IO/CoT per problem. Since Qwen2.5-Coder runs
+locally for free, this cost is purely in wall-clock time rather than dollars. CoT-SC at 66\%
+offers a middle ground with significantly fewer LLM calls.
 
 %% ── 5. Reflections ──────────────────────────────────────────────────────────────
 \section*{5. Reflections}

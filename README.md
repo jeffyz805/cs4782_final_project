@@ -79,39 +79,46 @@ vs. 52% IO / 60% CoT on 50 HumanEval-Bugs Python problems.
 
 ### Requirements
 - Python 3.10+
-- `OPENAI_API_KEY` environment variable (for real LLM; skip for demo mode)
+- [Ollama](https://ollama.com) for local Qwen inference (free, no account needed)
 
-### Install dependencies
+### 1. Install Ollama and pull Qwen2.5-Coder
+```bash
+brew install ollama          # or download from https://ollama.com
+ollama pull qwen2.5-coder:7b
+ollama serve                 # keep this running in a separate terminal
+```
+
+### 2. Install Python dependencies
 ```bash
 pip install -r code/requirements.txt
 ```
 
-### Run offline demo (no API key required)
+### 3. Run offline demo (sanity check, no model needed)
 ```bash
 cd code
 python run_experiments.py --demo
 ```
-Uses `MockLLMClient` and 8 built-in problems to verify the pipeline end-to-end.
 
-### Run full experiments
+### 4. Run full experiments with Qwen (default backend)
 ```bash
-export OPENAI_API_KEY="your-key-here"
 cd code
-# BFS only (default)
+# BFS + all baselines
 python run_experiments.py --n 50 --k 3 --search bfs --baselines
 
-# Both BFS and DFS + all baselines
+# Both BFS and DFS
 python run_experiments.py --n 50 --k 3 --both --baselines
 ```
+No API key needed — runs entirely locally via Ollama.
+Estimated time: ~60 min on M3 Mac, ~2 hrs on M1.
 
-### Analyze and plot results
+### 5. Analyze and plot results
 ```bash
 cd code
 python analyze_results.py --results_dir ../results/ --save_figs
 ```
 Outputs `fix_rates.png`, `token_cost.png`, `bug_type_breakdown.png` to `results/`.
 
-**Compute**: CPU only, no GPU needed. Estimated API cost: ~$1–2 for 50 problems with k=3.
+**Compute**: CPU only, no GPU required. Runs on Apple Silicon via Ollama Metal acceleration.
 
 ---
 

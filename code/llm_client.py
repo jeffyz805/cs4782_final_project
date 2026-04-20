@@ -70,7 +70,8 @@ class LLMClient:
                     temperature=temperature,
                 )
                 content = response.choices[0].message.content or ""
-                tokens = response.usage.total_tokens
+                # Ollama may not report token usage
+                tokens = response.usage.total_tokens if response.usage else len(prompt.split()) * 2
                 self._total_tokens += tokens
                 self._total_calls += 1
                 return {"content": content, "tokens": tokens}

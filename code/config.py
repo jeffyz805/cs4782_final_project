@@ -2,8 +2,10 @@
 import os
 
 # LLM settings
+# Backend: "ollama" (local, free) | "openai" | "together" | "groq"
+BACKEND = os.getenv("TOT_BACKEND", "ollama")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-MODEL = os.getenv("TOT_MODEL", "gpt-4o-mini")
+MODEL = os.getenv("TOT_MODEL", "qwen2.5-coder:7b")
 MAX_TOKENS_HYPOTHESIS = 800
 MAX_TOKENS_FIX = 600
 MAX_TOKENS_EVAL = 50
